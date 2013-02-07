@@ -1,0 +1,40 @@
+<html>
+  <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <title>JavaScript Temperature Converter</title>
+      <!--link href="css/global.css" rel="stylesheet" type="text/css"-->
+    <link href="css/mystylecss.css" rel="stylesheet" media="screen">
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="js/mystylejs.js"></script>
+     <script type="text/javascript" src="js/temperature.js"></script>
+  </head>
+  
+  <header>
+	<div class="well">
+		<h1>Temperature Converter</h1>
+	</div>
+  </header>
+  
+  <body>
+
+      
+        
+     <ul class="thumbnails">
+  <li class="span4">
+    <div class="thumbnail">
+      <img data-src="holder.js/300x200" alt="">
+	<th>Enter  Temperature (examples: 32F, 45C, -2.5f):</th>
+		<th><input id="original" class="input-block-level" type="text" placeholder=".input-block-level" onchange="calculate();"></th>
+	<th>Converted Temperature:</th>
+        <td><span class="output" id="converted"></span></td>
+    </div>
+  </li>
+</ul>
+  </body>
+  
+  <footer></footer>
+  
+  
+  
+  
+</html>
