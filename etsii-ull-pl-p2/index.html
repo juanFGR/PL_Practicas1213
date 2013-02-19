@@ -1,0 +1,43 @@
+<html>
+  <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <title>JavaScript CSV</title>
+      <link href="css/global.css" rel="stylesheet" type="text/css">
+    <link href="css/mystylecss.css" rel="stylesheet" media="screen">
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="js/mystylejs.js"></script>
+	
+	  <script type="text/javascript" src="js/underscore.js"></script>
+     <script type="text/javascript" src="js/jquery.js"></script>
+     <script type="text/javascript" src="js/csv.js"></script>
+  </head>
+  
+  <header>
+	<div class="well">
+		<h1>Comma Separated Value Analyzer</h1>
+	</div>
+  </header>
+  
+  <body>
+
+    
+    <div>
+      <i>Write a CSV string. Click the table button. The program outputs a table with the specified data.</i>
+    </div>
+    <table>
+      <tr>
+        <th>CSV string:</th> <!-- autofocus attribute is HTML5 -->
+        <td><textarea autofocus cols = "80" rows = "5" id="original"></textarea></td> 
+      </tr>
+    </table>
+    <button type="button" onclick="calculate();">table:</button><br>
+    <span class="output" id="finaltable"></span>
+	
+  </body>
+  
+  <footer></footer>
+  
+  
+  
+  
+</html>
