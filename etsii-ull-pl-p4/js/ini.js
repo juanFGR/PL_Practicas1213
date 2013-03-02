@@ -1,16 +1,16 @@
-"use ______"; // Use ECMAScript 5 strict mode in browsers that support it
+"use strict"; /**/   // Use ECMAScript 5 strict mode in browsers that support it
 
-$(document)._____(function() {
-   $("#fileinput").______(calculate);
+$(document).ready(function() { /**/
+   $("#fileinput").change(calculate); /**/
 });
 
 function calculate(evt) {
   var f = evt.target.files[0]; 
 
   if (f) {
-    var r = new __________();
+    var r = new FileReader(); /**/
     r.onload = function(e) { 
-      var contents = e.target.______;
+      var contents = e.target.result;/**/
       
       var tokens = lexer(contents);
       var pretty = tokensToString(tokens);
@@ -19,20 +19,20 @@ function calculate(evt) {
       initialinput._________ = contents;
       finaloutput._________ = pretty;
     }
-    r.__________(f); // Leer como texto
+    r.readAsText(f); // Leer como texto
   } else { 
     alert("Failed to load file");
   }
 }
 
-var temp = '<li> <span class = "<%= ______ %>"> <%= _ %> </span>\n';
+var temp = '<li> <span class = "<%= token.type %>"> <%= match%> </span>\n';/**/
 
 function tokensToString(tokens) {
    var r = '';
    for(var i in tokens) {
      var t = tokens[i];
      var s = JSON.stringify(t, undefined, 2);
-     s = _.template(temp, {t: t, s: s});
+     s = _.template(temp, {token: t, match: s});
      r += s;
    }
    return '<ol>\n'+r+'</ol>';

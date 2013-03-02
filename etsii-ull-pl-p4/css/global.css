@@ -23,18 +23,18 @@ tr:nth-child(even)    { background-color:#00FF66; }
 input        { text-align: right;  border: none;       }     /* Align input to the right  */
 textarea     { border: outset; border-color: white;       }                        
 table        { border: inset; border-color: white; }
-.hidden      { display: ____; }
-.unhidden    { display: _____; }
+.hidden      { display: none; }/**/
+.unhidden    { display: block; }/**/
 table.center { margin-left:auto; margin-right:auto; }
 #result      { border-color: red; }
 tr.error       { background-color: red; }
 pre.output   { background-color: white; }
-span.repeated { background-color: red }
-span.header { ________________: ____ }
-span.comments { ________________: ______ }
-span.blanks { ________________: _____ }
-span.nameEqualValue { ________________: ____ }
-span.error { ________________: ___ }
+span.repeated { background-color: red; }
+span.header { background-color: white;  } /*Colores que quiera*/
+span.comments { background-color: white;  }
+span.blanks { background-color: white;  }
+span.nameEqualValue { background-color: white;  }
+span.error { background-color: white;  }
 
 body
 {
