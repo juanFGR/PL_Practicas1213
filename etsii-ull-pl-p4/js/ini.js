@@ -1,31 +1,32 @@
-"use strict"; /**/   // Use ECMAScript 5 strict mode in browsers that support it
+"use strict"; // Use ECMAScript 5 strict mode in browsers that support it
 
-$(document).ready(function() { /**/
-   $("#fileinput").change(calculate); /**/
+$(document).ready(function() {
+   $("#fileinput").change(calculate);
 });
 
 function calculate(evt) {
-  var f = evt.target.files[0]; 
+
+  var f = evt.target.files[0];
 
   if (f) {
-    var r = new FileReader(); /**/
-    r.onload = function(e) { 
-      var contents = e.target.result;/**/
+    var r = new FileReader();
+    r.onload = function(e) {
+      var contents = e.target.result;
       
       var tokens = lexer(contents);
       var pretty = tokensToString(tokens);
       
       out.className = 'unhidden';
-      initialinput._________ = contents;
-      finaloutput._________ = pretty;
+      initialinput.innerHTML = contents;
+      finaloutput.innerHTML = pretty;
     }
     r.readAsText(f); // Leer como texto
-  } else { 
-    alert("Failed to load file");
+  } else {
+    alert("Fallo al cargar el fichero");
   }
 }
 
-var temp = '<li> <span class = "<%= token.type %>"> <%= match%> </span>\n';/**/
+var temp = '<li> <span class = "<%= token.type %>"> <%= match %> </span>\n';
 
 function tokensToString(tokens) {
    var r = '';
@@ -39,35 +40,35 @@ function tokensToString(tokens) {
 }
 
 function lexer(input) {
-  var blanks         = /^___/;
-  var iniheader      = /^________________/;
-  var comments       = /^________/;
-  var nameEqualValue = /^________________________/;
-  var any            = /^_______/;
+  var blanks = /^\s+/;
+  var iniheader = /^\[[a-zA-Z_]\w*\]/;
+  var comments = /^;.*/;
+  var nameEqualValue = /^[a-zA-Z_]\w*\s*(?:=)/;
+  var any = /^(.)+/;
 
   var out = [];
   var m = null;
 
   while (input != '') {
-    if (m = blanks.____(input)) {
-      input = input.substr(m.index+___________);
-      out.push({ type : ________, match: _ });
+    if (m = blanks.exec(input)) {
+      input = input.substr(m.index + m[0].length);
+      out.push({ type: "blanks", match: m[0] });
     }
     else if (m = iniheader.exec(input)) {
-      input = input.substr(___________________);
-      _______________________________________ // avanzemos en input
+      input = input.substr(m.index + m[0].length);
+      out.push({ type: "iniheader", match: m[0] }); // avanzemos en input
     }
     else if (m = comments.exec(input)) {
-      input = input.substr(___________________);
-      _________________________________________
+     input = input.substr(m.index + m[0].length);
+     out.push({ type: "comments", match: m[0] });
     }
     else if (m = nameEqualValue.exec(input)) {
-      input = input.substr(___________________);
-      _______________________________________________
+      input = input.substr(m.index + m[0].length);
+      out.push({ type: "nameEqualValue", match: m[0] });
     }
     else if (m = any.exec(input)) {
-      _______________________________________
-      input = '';
+      input = input.substr(m.index + m[0].length);
+      out.push ({type: "any", match: m[0]});
     }
     else {
       alert("Fatal Error!"+substr(input,0,20));
