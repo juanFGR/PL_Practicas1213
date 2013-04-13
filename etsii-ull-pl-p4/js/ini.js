@@ -5,12 +5,11 @@ $(document).ready(function() {
 });
 
 function calculate(evt) {
-
-  var f = evt.target.files[0];
+  var f = evt.target.files[0]; 
 
   if (f) {
     var r = new FileReader();
-    r.onload = function(e) {
+    r.onload = function(e) { 
       var contents = e.target.result;
       
       var tokens = lexer(contents);
@@ -21,54 +20,54 @@ function calculate(evt) {
       finaloutput.innerHTML = pretty;
     }
     r.readAsText(f); // Leer como texto
-  } else {
-    alert("Fallo al cargar el fichero");
+  } else { 
+    alert("Failed to load file");
   }
 }
 
-var temp = '<li> <span class = "<%= token.type %>"> <%= match %> </span>\n';
+var temp = '<li> <span class = "<%= t.type %>"> <%= s %> </span>\n';
 
 function tokensToString(tokens) {
    var r = '';
    for(var i in tokens) {
      var t = tokens[i];
      var s = JSON.stringify(t, undefined, 2);
-     s = _.template(temp, {token: t, match: s});
+     s = _.template(temp, {t: t, s: s});
      r += s;
    }
    return '<ol>\n'+r+'</ol>';
 }
 
 function lexer(input) {
-  var blanks = /^\s+/;
-  var iniheader = /^\[[a-zA-Z_]\w*\]/;
-  var comments = /^;.*/;
-  var nameEqualValue = /^[a-zA-Z_]\w*\s*(?:=)/;
-  var any = /^(.)+/;
+  var blanks         = /^\s+/;
+  var iniheader      = /^\[([^\]\r\n]+)\]/;
+  var comments       = /^[;#](.*)/;
+  var nameEqualValue = /^(([^=;\r\n]+)=([^;\r\n]*)/;
+  var any            = /^(.|\n)+/;
 
   var out = [];
   var m = null;
 
   while (input != '') {
     if (m = blanks.exec(input)) {
-      input = input.substr(m.index + m[0].length);
-      out.push({ type: "blanks", match: m[0] });
+      input = input.substr(m.index+m.lastIndex);
+      out.push({ type : 'Blanks', match: m });
     }
     else if (m = iniheader.exec(input)) {
-      input = input.substr(m.index + m[0].length);
-      out.push({ type: "iniheader", match: m[0] }); // avanzemos en input
+      input = input.substr(m.index+m.lastIndex);
+      out.push({ type: 'Headers', match: m }); // avanzemos en input
     }
     else if (m = comments.exec(input)) {
-     input = input.substr(m.index + m[0].length);
-     out.push({ type: "comments", match: m[0] });
+      input = input.substr(m.index+m.lastIndex);
+      out.push({ type: 'Comments', match: m });
     }
     else if (m = nameEqualValue.exec(input)) {
-      input = input.substr(m.index + m[0].length);
-      out.push({ type: "nameEqualValue", match: m[0] });
+      input = input.substr(m.index+m.lastIndex);
+      out.push({ type: 'NameEqualValue', match: m });
     }
     else if (m = any.exec(input)) {
-      input = input.substr(m.index + m[0].length);
-      out.push ({type: "any", match: m[0]});
+      out.push({ type: 'Error', match: m });
+      input = '';
     }
     else {
       alert("Fatal Error!"+substr(input,0,20));

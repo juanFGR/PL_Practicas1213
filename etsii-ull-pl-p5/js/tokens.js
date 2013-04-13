@@ -26,22 +26,22 @@ String.prototype.tokens = function () {
     var m;                      // Matching
     var result = [];            // An array to hold the results.
 
-    var WHITES              = _______________________________________;
-    var ID                  = _______________________________________;
-    var NUM                 = _______________________________________;
-    var STRING              = _______________________________________;
-    var ONELINECOMMENT      = _______________________________________;
-    var MULTIPLELINECOMMENT = _______________________________________;
-    var TWOCHAROPERATORS    = _______________________________________;
-    var ONECHAROPERATORS    = _______________________________________;
+    var WHITES              = /\s+/g;
+    var ID                  = /[a-zA-Z_]\w*/g;
+    var NUM                 = /\b\d+(\.\d*)?([eE][+-]?\d+)?\b/g;
+    var STRING              = /('\\.|[^'])*'|"(\\.|[^"])*"/g;
+    var ONELINECOMMENT      = /[/][/].*/g;
+    var MULTIPLELINECOMMENT = /\/[*](.|\n)*?[*]\//g;
+    var TWOCHAROPERATORS    = /([+][+=]|-[-=]|=[=<>]|[<>][=<>]|&&|[|][|])/g;
+    var ONECHAROPERATORS    = /([-+*\/=<>()&|:;[\]])/g;
 
     // Make a token object.
-    var make = function (type, value) {
+    var make = function (type, value) {   //crea objetos token
         return {
-            type: _____,
-            value: ______,
-            from: ______,
-            to: ____
+            type: type,
+            value: value,
+            from: from,   //'from' y 'to' se sacan de variables que estan en ambito
+            to: i
         };
     };
 
@@ -49,53 +49,58 @@ String.prototype.tokens = function () {
     if (!this) return; 
 
     // Loop through this text
-    while (_______________) {
-        WHITES.lastIndex =  ID.lastIndex = NUM.lastIndex = ______.lastIndex =
-        ONELINECOMMENT.lastIndex = ___________________.lastIndex =
-        ________________.lastIndex = ________________.lastIndex = _;
-        from = i;
+    while (i < this.length) {
+        WHITES.lastIndex =  ID.lastIndex = NUM.lastIndex = STRING.lastIndex =
+        ONELINECOMMENT.lastIndex = MULTIPLELINECOMMENT.lastIndex =
+        TWOCHAROPERATORS.lastIndex = ONECHAROPERATORS.lastIndex = i; //Todas son iguales a donde acabó el matching
+        from = i; //Cursor que movemos por la cadena
+        
         // Ignore whitespace.
         if (m = WHITES.bexec(this)) {
             str = m[0];
-            _______________
+            i = i + str.length;
+            
         // name.
         } else if (m = ID.bexec(this)) {
             str = m[0];
-            _______________
+            i = i + str.length; //avanzar índice i
             result.push(make('name', str));
 
         // number.
         } else if (m = NUM.bexec(this)) {
             str = m[0];
-            _______________
-
-            n = +str;
+            i = i + str.length;
+            n = +str; //Forzar conversión de cadena a número
             if (isFinite(n)) {
-                result.____(make('number', n));
+                result.push(make('number', n));
             } else {
                 make('number', str).error("Bad number");
             }
+            
         // string
         } else if (m = STRING.bexec(this)) {
             str = m[0];
-            _______________
-            str = str.replace(/^____/,'');
+            i = i + str.length;
+            str = str.replace(/^["']/,'');  
             str = str.replace(/["']$/,'');
-            result.____(make('string', str));
+            result.push(make('string', str));
+            
         // comment.
         } else if ((m = ONELINECOMMENT.bexec(this))  || 
                    (m = MULTIPLELINECOMMENT.bexec(this))) {
             str = m[0];
-            _______________
+            i = i + str.length;
+        
         // two char operator
         } else if (m = TWOCHAROPERATORS.bexec(this)) {
             str = m[0];
-            _______________
-            result.____(make('operator', str));
+            i = i + str.length;
+            result.push(make('operator', str));
+        
         // single-character operator
         } else if (m = ONECHAROPERATORS.bexec(this)){
-            result.____(make('operator', this.substr(i,1)));
-            _______________
+            result.push(make('operator', this.substr(i,1)));
+            i = i + str.length;
         } else {
           throw "Syntax error near '"+this.substr(i)+"'";
         }

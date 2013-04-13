@@ -2,7 +2,7 @@ Object.prototype.error = function (message, t) {
     t = t || this;
     t.name = "SyntaxError";
     t.message = message;
-    throw t;
+    throw t;    //genera una excepcion
 };
 
 function main() {
@@ -11,7 +11,7 @@ function main() {
 
     var source = INPUT.value;
     var string, tree;
-    try {
+    try {       //si en algun momento se genera un error, se ejecuta "catch"
         tree = parse(source);
         
         //string = JSON.stringify(tree, ['type', 'value', 'from', 'to'],  4);
